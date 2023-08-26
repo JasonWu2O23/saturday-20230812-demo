@@ -30,7 +30,7 @@ jobs:
 	     aws-region: us-east-1 # or hardcode us-east-1
 ##CI
    - name: Terraform Lint
-     run: terraform fmt -check
+     run: terraform fmt -recursive
 
 
    - name: Initialize Terraform
