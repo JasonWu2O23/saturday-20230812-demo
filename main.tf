@@ -17,7 +17,7 @@ terraform {
 resource "aws_instance" "Jinqing-WebServer-1" {
   ami = "ami-0f34c5ae932e6f0e4"
   instance_type = "t2.micro"
-  keyname = "JinqingKeyPair"
+  key_name = "JinqingKeyPair"
   associate_public_ip_address = "true"
   subnet_id = "subnet-027c8f2bf5bd91bd8"
   vpc_security_group_ids = [aws_security_group.jinqing_allow_https_ssh_icmp_traffic.id]
@@ -30,7 +30,7 @@ resource "aws_instance" "Jinqing-WebServer-1" {
 resource "aws_instance" "Jinqing-WebServer-2" {
   ami = "ami-0f34c5ae932e6f0e4"
   instance_type = "t2.micro"
-  keyname = "JinqingKeyPair"
+  key_name = "JinqingKeyPair"
   associate_public_ip_address = "true"
   subnet_id = "subnet-027c8f2bf5bd91bd8"
   vpc_security_group_ids = [aws_security_group.jinqing_allow_https_ssh_icmp_traffic.id]
@@ -43,7 +43,7 @@ resource "aws_instance" "Jinqing-WebServer-2" {
 resource "aws_instance" "Jinqing-Ansibleserver" {
   ami = "ami-0f34c5ae932e6f0e4"
   instance_type = "t2.micro"
-  keyname = "JinqingKeyPair"
+  key_name = "JinqingKeyPair"
   associate_public_ip_address = "true"
   subnet_id = "subnet-027c8f2bf5bd91bd8"
   vpc_security_group_ids = [aws_security_group.jinqing_allow_https_ssh_icmp_traffic.id]
