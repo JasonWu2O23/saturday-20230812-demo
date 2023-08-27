@@ -14,9 +14,49 @@ terraform {
 
 }
 
-resource "aws_security_group" "jinqing_allow_http_https_ssh_traffic" {
-  name        = "jinqing_allow_http_https_ssh_traffic"
-  description = "Allow inbound traffic for https, http and ssh"
+resource "aws_instance" "Jinqing-WebServer-1" {
+  ami = "ami-0f34c5ae932e6f0e4"
+  instance_type = "t2.micro"
+  keyname = "JinqingKeyPair"
+  associate_public_ip_address = "true"
+  subnet_id = "subnet-027c8f2bf5bd91bd8"
+  vpc_security_group_ids = [aws_security_group.jinqing_allow_https_ssh_icmp_traffic.id]
+
+  tags = {
+    Name = "Jinqing-WebServer-1"
+  }
+}
+
+resource "aws_instance" "Jinqing-WebServer-2" {
+  ami = "ami-0f34c5ae932e6f0e4"
+  instance_type = "t2.micro"
+  keyname = "JinqingKeyPair"
+  associate_public_ip_address = "true"
+  subnet_id = "subnet-027c8f2bf5bd91bd8"
+  vpc_security_group_ids = [aws_security_group.jinqing_allow_https_ssh_icmp_traffic.id]
+
+  tags = {
+    Name = "Jinqing-WebServer-2"
+  }
+}
+
+resource "aws_instance" "Jinqing-Ansibleserver" {
+  ami = "ami-0f34c5ae932e6f0e4"
+  instance_type = "t2.micro"
+  keyname = "JinqingKeyPair"
+  associate_public_ip_address = "true"
+  subnet_id = "subnet-027c8f2bf5bd91bd8"
+  vpc_security_group_ids = [aws_security_group.jinqing_allow_https_ssh_icmp_traffic.id]
+  user_data = file("${path.module}/ec2-user-data.sh") 
+
+  tags = {
+    Name = "Jinqing-Ansibleserver"
+  }
+}
+
+resource "aws_security_group" "jinqing_allow_https_ssh_icmp_traffic" {
+  name        = "jinqing_allow_https_ssh_icmp_traffic"
+  description = "Allow inbound traffic for https, ssh and icmp"
 
   ingress {
     description      = "HTTPS inbound"
@@ -27,18 +67,18 @@ resource "aws_security_group" "jinqing_allow_http_https_ssh_traffic" {
   }
 
   ingress {
-    description      = "HTTP inbound"
-    from_port        = 80
-    to_port          = 80
-    protocol         = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
     description      = "SSH inbound"
     from_port        = 22
     to_port          = 22
     protocol         = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+    ingress {
+    description      = "ICMP inbound"
+    from_port        = -1
+    to_port          = -1
+    protocol         = "icmp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
